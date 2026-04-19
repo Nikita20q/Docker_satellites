@@ -48,7 +48,7 @@ jobs:
       - name: Run Trivy vulnerability scanner (Image)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'server_server:latest'
+          image-ref: 'my-satellite-server:latest'
           format: 'sarif'
           output: 'trivy-image-results.sarif'
       
