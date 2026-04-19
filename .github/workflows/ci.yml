@@ -1,0 +1,51 @@
+name: CI/CD Pipeline for Satellite System
+
+on:
+  push:
+    branches: [ "master" ] # Запуск при пуше в master
+  pull_request:
+    branches: [ "master" ] # Запускать при создании пулл реквеста
+
+env:
+  DOCKER_IMAGE_SERVER: ${{ secrets.DOCKER_USERNAME }}/gof-satellites-server
+  DOCKER_IMAGE_CLIENT: ${{ secrets.DOCKER_USERNAME }}/scheduler-client
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Build Docker Images
+        run: |
+          docker-compose build
+      
+      - name: Run Trivy vulnerability scanner (FS)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: Start Services
+        run: docker-compose up -d
+        
+      - name: Wait for services
+        run : |
+          sleep 10
+          curl -f http://localhost:8080/api/overview || exit 1
+          echo "Server is healthy"
+        
+      - name: Run Trivy vulnerability scanner (Image)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'server_server:latest'
+          format: 'sarif'
+          output: 'trivy-image-results.sarif'
+      
+      - name: Stop Services
+        if: always()
+        run: docker-compose down
