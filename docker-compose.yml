@@ -26,6 +26,7 @@ services:
       dockerfile: Dockerfile
     container_name: mission-service
     environment:
+      - MY_API_TOKEN=${MY_API_TOKEN}
       - SERVER_PORT=8081
       - SERVER_URL=http://server:8080
     ports:
