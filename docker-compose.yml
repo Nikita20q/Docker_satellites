@@ -5,7 +5,7 @@ services:
     build:
       context: ./Server
       dockerfile: Dockerfile
-    image: my-satellite-server:latest
+    image: my-satellite-server:${IMAGE_TAG:-latest}
     container_name: server
     environment:
       - SERVER_PORT=8080
@@ -24,6 +24,7 @@ services:
     build:
       context: ./Scheduler
       dockerfile: Dockerfile
+    image: my-scheduler-client:${IMAGE_TAG:-latest}
     container_name: mission-service
     environment:
       - MY_API_TOKEN=${MY_API_TOKEN}
