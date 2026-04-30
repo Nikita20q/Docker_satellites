@@ -1,10 +1,28 @@
 package seminars;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "satellite_constellation")
+@Data
+@NoArgsConstructor
 public class SatelliteConstellation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column (name = "name", nullable = false, unique = true)
     private String constellationName;
-    private ArrayList<Satellite> satellites = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "constellation", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Satellite> satellites = new ArrayList<>();
 
     public SatelliteConstellation(String name) {
         constellationName = name;
@@ -22,7 +40,7 @@ public class SatelliteConstellation {
             i.performMission();
         }
     }
-    public ArrayList<Satellite> getSatellites() {
+    public List<Satellite> getSatellites() {
         return satellites;
     }
     public String getConstellationName() {

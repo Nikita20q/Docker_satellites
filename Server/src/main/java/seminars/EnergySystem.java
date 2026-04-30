@@ -1,21 +1,34 @@
 package seminars;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "energy_system")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class EnergySystem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "battery_level", nullable = false)
     private double batteryLevel;
 
+    @Column(name = "low_battery_threshold", nullable = false)
     private double LOW_BATTERY_THRESHOLD;
-    private double MAX_BATTERY;
-    private double MIN_BATTERY;
-    public double getBatteryLevel() {
-        return batteryLevel;
-    }
 
-//    public EnergySystem(double batteryLevel) {
-//        this.batteryLevel = Math.max(MIN_BATTERY ,batteryLevel);
-//    }
+    @Column(name = "max_battery", nullable = false)
+    private double MAX_BATTERY;
+
+    @Column(name = "min_battery", nullable = false)
+    private double MIN_BATTERY;
 
     public boolean consume(double amount) {
         if (amount <= 0 || batteryLevel <= MIN_BATTERY) {
@@ -28,19 +41,5 @@ public class EnergySystem {
     public boolean hasSufficientPower() {
         return batteryLevel > LOW_BATTERY_THRESHOLD;
     }
-    public void setBatteryLevel(double batteryLevel) {
-        if (batteryLevel > MAX_BATTERY) {
-            this.batteryLevel = MAX_BATTERY;
-        } else if  (batteryLevel < MIN_BATTERY) {
-            this.batteryLevel = MIN_BATTERY;
-        } else {
-            this.batteryLevel = batteryLevel;
-        }
-    }
-    @Override
-    public String toString() {
-        return "seminars.EnergySystem{" + "batteryLevel=" + batteryLevel + '}';
-    }
-
 
 }

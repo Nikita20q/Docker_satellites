@@ -10,7 +10,6 @@ import seminars.domain.requests.MissionTargetType;
 import seminars.exeptions.SpaceOperationException;
 import seminars.params.CommunicationSatelliteParam;
 import seminars.params.ImagingSatelliteParam;
-import seminars.repository.ConstellationRepository;
 import seminars.services.SpaceOperationCenterService;
 
 import java.util.List;

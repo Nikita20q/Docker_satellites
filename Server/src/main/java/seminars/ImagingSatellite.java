@@ -1,7 +1,21 @@
 package seminars;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Getter
+@ToString
+@Entity
+@DiscriminatorValue("IMAGING")
+@NoArgsConstructor
 public class ImagingSatellite extends Satellite {
+    @Column(name = "resolution")
     private double resolution;
+    @Column(name = "photos_taken")
     private int photosTaken;
 
     public double getResolution() {
@@ -11,10 +25,10 @@ public class ImagingSatellite extends Satellite {
     public int getPhotosTaken() {
         return photosTaken;
     }
-
     public ImagingSatellite(String name, double batteryLevel, double resolution) {
         super(name, batteryLevel);
         this.resolution = resolution;
+        this.photosTaken = 0;
         System.out.println(String.format("Создан спутник: %s (заряд: %f%%)", name, energy.getBatteryLevel()));
     }
 
@@ -32,10 +46,5 @@ public class ImagingSatellite extends Satellite {
 
     private void takePhoto() {
         photosTaken ++;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("seminars.ImagingSatellite{resolution=%.2f, photosTaken=%d, name='%s', isActive=%b, batteryLevel=%.2f}", resolution, photosTaken, name, state.isActive(), energy.getBatteryLevel());
     }
 }

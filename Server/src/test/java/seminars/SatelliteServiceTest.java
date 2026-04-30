@@ -3,14 +3,12 @@ package seminars;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import seminars.exeptions.SpaceOperationException;
 import seminars.params.ImagingSatelliteParam;
 import seminars.params.SatelliteParam;
-import seminars.repository.ConstellationRepository;
-import seminars.services.SatelliteServiceImpl;
+import seminars.services.SatelliteService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +21,7 @@ public class SatelliteServiceTest {
     private static final Double PARAM = 0.1;
 
     @Autowired
-    private SatelliteServiceImpl satelliteService;
+    private SatelliteService satelliteService;
 
     @Test
     @DisplayName("Добавление нескольких группировок должно сохранять их все")

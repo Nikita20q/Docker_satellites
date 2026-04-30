@@ -1,11 +1,24 @@
 package seminars;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Getter
+@ToString
+@Entity
+@DiscriminatorValue("COMMUNICATION")
+@NoArgsConstructor
 public class CommunicationSatellite extends Satellite{
+    @Column(name = "bandwidth")
     private double bandWidth;
+
     public double getBandWidth() {
         return bandWidth;
     }
-
 
     public CommunicationSatellite(String name, double batteryLevel, double bandWidth) {
         super(name, batteryLevel);

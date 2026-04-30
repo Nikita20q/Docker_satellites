@@ -14,8 +14,9 @@ repositories {
 
 dependencies {
     implementation("org.projectlombok:lombok:1.18.38")
-    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.postgresql:postgresql")
 
     implementation ("org.springframework.boot:spring-boot-starter-web")
     implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5")

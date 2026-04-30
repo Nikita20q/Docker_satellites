@@ -33,11 +33,11 @@ public class SpaceOperationCenterService {
     public void executeMission(MissionRequest missionRequest) {
         switch (missionRequest.missionTargetType()) {
             case CONSTELLATION -> {
-                constellationService.activateAllConstellation(missionRequest.constallationName());
+                constellationService.activateAllSatellites(missionRequest.constallationName());
                 constellationService.executeConstellationMission(missionRequest.constallationName());
             }
             case SINGLE_SATELLITE -> {
-                var constellation = constellationService.getConstellations(missionRequest.constallationName());
+                var constellation = constellationService.getConstellationByName(missionRequest.constallationName());
                 var satellite = constellation.getSatellites().stream()
                         .filter(s -> s.getName().equals(missionRequest.satelliteName()))
                         .findFirst()
