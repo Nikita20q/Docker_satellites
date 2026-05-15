@@ -18,6 +18,12 @@ abstract public class Satellite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "temperature_inside")
+    private Double temperatureInside;
+
+    @Column(name = "temperature_outside")
+    private Double temperatureOutside;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "constellation_id")

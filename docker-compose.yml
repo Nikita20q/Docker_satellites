@@ -15,7 +15,7 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - space-network
+      - space-net
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/satellites" ]
       interval: 10s
@@ -33,7 +33,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - space-network
+      - space-net
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -59,10 +59,25 @@ services:
       server:
         condition: service_healthy
     networks:
-      - space-network
+      - space-net
 
+  telemetry-service:
+    build: ./telemetry-service
+    container_name: telemetry-service
+    ports:
+      - "8082:8082"
+      - "9091:9091"
+    networks:
+      - space-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 9091"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 networks:
-  space-network:
+  space-net:
     driver: bridge
 volumes:
   pgdata:

@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS satellite (
     state_is_active BOOLEAN DEFAULT FALSE,
     state_status_message VARCHAR(255),
 
+    temperature_inside DOUBLE PRECISION,
+    temperature_outside DOUBLE PRECISION,
+
     frequency DOUBLE PRECISION,
     bandwidth DOUBLE PRECISION,
 
