@@ -22,7 +22,7 @@ public class TelemetryServiceGrpcImpl extends TelemetryServiceGrpc.TelemetryServ
     public void streamTelemetry(Telemetry.TelemetryRequest request, StreamObserver<Telemetry.TelemetryUpdate> responseObserver) {
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
-                Long satId = random.nextLong();
+                Long satId = SATELLITE_IDS.get(random.nextInt(SATELLITE_IDS.size()));
                 Telemetry.TelemetryUpdate update = Telemetry.TelemetryUpdate.newBuilder()
                         .setSatelliteId(satId)
                         .setTemperatureInside(20.0 + random.nextDouble() * 10)
