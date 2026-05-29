@@ -15,6 +15,8 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-json")
+    implementation("org.projectlombok:lombok:1.18.38")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -23,6 +25,12 @@ dependencies {
     implementation("io.grpc:grpc-stub:1.62.2")
     implementation("io.grpc:grpc-protobuf:1.62.2")
     implementation("net.devh:grpc-server-spring-boot-starter:3.0.0.RELEASE")
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("org.apache.kafka:kafka-clients")
+
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+
     compileOnly("org.apache.tomcat:annotations-api:6.0.53")
 }
 

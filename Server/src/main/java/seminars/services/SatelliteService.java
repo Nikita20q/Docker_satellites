@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import seminars.Satellite;
 import seminars.exeptions.SpaceOperationException;
 import seminars.factory.SatelliteFactory;
+import seminars.kafka.KafkaService;
+import seminars.kafka.KafkaUtils;
+import seminars.kafka.SatelliteEvent;
 import seminars.params.SatelliteParam;
 import seminars.repository.SatelliteRepository;
 
@@ -17,8 +20,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class SatelliteService {
+    private static final String SATELLITE_EVENT_TOPIC = "satellite-events";
+
     private final List<SatelliteFactory> factories;
     private final SatelliteRepository satelliteRepository;
+    private final KafkaService kafkaService;
 
     public Satellite createSatellite(SatelliteParam param) throws SpaceOperationException {
         SatelliteFactory factory = factories.stream()
@@ -27,7 +33,12 @@ public class SatelliteService {
                 .orElseThrow(() -> new SpaceOperationException("Неподдерживаемый тип спутника: " + param.getType()));
 
         Satellite satellite = factory.createSatelliteWithParameter(param);
-        return satelliteRepository.save(satellite);
+        Satellite satelliteCreated = satelliteRepository.save(satellite);
+        kafkaService.sendToKafkaSatellite(
+                SATELLITE_EVENT_TOPIC,
+                KafkaUtils.createSatelliteEvent(satelliteCreated, SatelliteEvent.EventType.CREATED)
+        );
+        return satelliteCreated;
     }
 
     @Transactional(readOnly = true)
@@ -49,9 +60,11 @@ public class SatelliteService {
     }
 
     public void deleteSatelliteById(Long id) {
-        if (!satelliteRepository.existsById(id)) {
-            throw new RuntimeException("Спутник с id=" + id + " не найден");
-        }
+        Satellite satellite = satelliteRepository.findById(id).orElseThrow(() -> new RuntimeException("Спутник с id=" + id + " не найден"));
         satelliteRepository.deleteById(id);
+        kafkaService.sendToKafkaSatellite(
+                SATELLITE_EVENT_TOPIC,
+                KafkaUtils.createSatelliteEvent(satellite, SatelliteEvent.EventType.DELETED)
+        );
     }
 }
