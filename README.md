@@ -4,5 +4,3 @@
 Переходим в склонированную папку: cd AutoTests
 Запуск тестов: ./gradlew clean test
 Генерация отчёта: allure serve build/allure-results
-
-![Allure Report](Images/screenshot_1.png)
